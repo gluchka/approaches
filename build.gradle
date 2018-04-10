@@ -1,0 +1,58 @@
+group 'akkroaches'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.google.guava:guava:18.0'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'org.assertj:assertj-core:1.7.0'
+    testCompile 'org.jbehave:jbehave-core:3.9.5'
+    testCompile 'org.jbehave.site:jbehave-site-resources:3.1.1:@zip'
+}
+
+sourceSets.test.resources.srcDir 'src/test/java'
+
+task acceptStories(type: Test) {
+    description 'Runs the BDD tests'
+
+    // Use properties for filtering stories
+    systemProperty "metaFilters", System.getProperty("filter", "")
+    systemProperty "story", System.getProperty("story", "*")
+
+    /*
+     * JBehave requires the Maven's "target" folder in order
+     * to obtain the absolute path from relative path.
+     */
+    doFirst {
+        copy {
+            from(zipTree(jarPath("jbehave-core"))) {
+                include "style/*"
+            }
+            into("build/jbehave/view")
+
+        }
+        copy {
+            from(zipTree(jarPath("jbehave-site-resources"))) {
+                include "js/**/*"
+                include "style/**/*"
+                include "images/*"
+            }
+            into("build/jbehave/view")
+        }
+    }
+}
+
+def jarPath(String jarName) {
+    configurations.testCompile.find({ it.name.startsWith(jarName) }).absolutePath
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2.1'
+}
