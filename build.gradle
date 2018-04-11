@@ -5,6 +5,8 @@ apply plugin: 'java'
 
 sourceCompatibility = 1.8
 
+systemProperty "story", System.getProperty("story", "*")
+
 repositories {
     mavenCentral()
 }
@@ -19,7 +21,7 @@ dependencies {
 
 sourceSets.test.resources.srcDir 'src/test/java'
 
-task acceptStories(type: Test) {
+task(type: Test, 'bddTest') {
     description 'Runs the BDD tests'
 
     // Use properties for filtering stories
@@ -31,6 +33,8 @@ task acceptStories(type: Test) {
      * to obtain the absolute path from relative path.
      */
     doFirst {
+        file('target').mkdirs();
+
         copy {
             from(zipTree(jarPath("jbehave-core"))) {
                 include "style/*"
@@ -46,6 +50,11 @@ task acceptStories(type: Test) {
             }
             into("build/jbehave/view")
         }
+
+    }
+
+    doLast {
+        file('target').delete();
     }
 }
 
@@ -56,3 +65,4 @@ def jarPath(String jarName) {
 task wrapper(type: Wrapper) {
     gradleVersion = '2.2.1'
 }
+apply plugin: 'java'
