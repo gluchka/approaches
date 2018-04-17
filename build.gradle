@@ -5,7 +5,6 @@ apply plugin: 'java'
 
 sourceCompatibility = 1.8
 
-systemProperty "story", System.getProperty("story", "*")
 
 repositories {
     mavenCentral()
@@ -26,14 +25,14 @@ task(type: Test, 'bddTest') {
 
     // Use properties for filtering stories
     systemProperty "metaFilters", System.getProperty("filter", "")
-    systemProperty "story", System.getProperty("story", "*")
+    systemProperty "story", System.getProperty("story", "resources.java.akhadova.*")
 
     /*
      * JBehave requires the Maven's "target" folder in order
      * to obtain the absolute path from relative path.
      */
     doFirst {
-        file('target').mkdirs();
+        file('target').mkdirs()
 
         copy {
             from(zipTree(jarPath("jbehave-core"))) {
@@ -54,7 +53,7 @@ task(type: Test, 'bddTest') {
     }
 
     doLast {
-        file('target').delete();
+        file('target').delete()
     }
 }
 
@@ -65,5 +64,4 @@ def jarPath(String jarName) {
 task wrapper(type: Wrapper) {
     gradleVersion = '2.2.1'
 }
-apply plugin: 'java'
 apply plugin: 'java'
