@@ -1,6 +1,5 @@
-package akhadova.steps;
+package steps;
 
-import akhadova.StoryRunnerConfig;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;

@@ -12,10 +12,17 @@ repositories {
 
 dependencies {
     compile 'com.google.guava:guava:18.0'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+//    testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile 'org.assertj:assertj-core:1.7.0'
-    testCompile 'org.jbehave:jbehave-core:3.9.5'
+//    testCompile 'org.jbehave:jbehave-core:3.9.5'
     testCompile 'org.jbehave.site:jbehave-site-resources:3.1.1:@zip'
+
+
+    testCompile (
+            [group: 'junit', name: 'junit', version: '4.11'],
+            [group: 'org.jbehave', name: 'jbehave-core', version: '4.0-beta-9'],
+            [group: 'de.codecentric', name: 'jbehave-junit-runner', version: '1.1.2']
+    )
 }
 
 sourceSets.test.resources.srcDir 'src/test/java'
@@ -25,7 +32,7 @@ task(type: Test, 'bddTest') {
 
     // Use properties for filtering stories
     systemProperty "metaFilters", System.getProperty("filter", "")
-    systemProperty "story", System.getProperty("story", "resources.java.akhadova.*")
+    systemProperty "story", System.getProperty("story", "*")
 
     /*
      * JBehave requires the Maven's "target" folder in order
