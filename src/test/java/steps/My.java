@@ -19,6 +19,6 @@ public class My extends StoryRunnerConfig {
 
     @Then("log third step to console")
     public void third() {
-        System.out.println("second step");
+        System.out.println("third step");
     }
 }
